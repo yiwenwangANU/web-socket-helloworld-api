@@ -1,5 +1,20 @@
-import express from "express";
+import { Server } from "socket.io";
+import { createServer } from "http";
 
-const app = express();
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:5173", // your React app URL
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
-app.listen(4000);
+io.on("connection", (socket) => {
+  console.log(socket.id);
+  socket.emit("message", "hello from server");
+});
+
+httpServer.listen(4000, () => {
+  console.log("server running on http://localhost:4000");
+});
