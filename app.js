@@ -17,10 +17,15 @@ io.on("connection", (socket) => {
   socket.on("join", (data) => console.log(data));
   socket.on("message", (data) => console.log(data));
   socket.on("chat", (data) => chatMessages.push(data));
+
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
   });
 });
+setInterval(() => {
+  console.log(chatMessages);
+  io.emit("chatMessages", chatMessages);
+}, 10000);
 // setInterval(() => {
 //   console.log("Dropping all sockets...");
 //   console.log("Active sockets:", io.sockets.sockets.size);
@@ -29,9 +34,6 @@ io.on("connection", (socket) => {
 //   });
 // }, 1000);
 
-// setInterval(() => {
-//   io.emit("chatMessages", chatMessages);
-// }, 5000);
 httpServer.listen(4000, () => {
   console.log("server running on http://localhost:4000");
 });
