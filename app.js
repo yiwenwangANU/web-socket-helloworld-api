@@ -9,16 +9,29 @@ const io = new Server(httpServer, {
     credentials: true,
   },
 });
-
+const chatMessages = [];
 io.on("connection", (socket) => {
   // in server always put socket.emit socket.on in callback
   console.log(socket.id);
   socket.emit("message", "hello from server");
   socket.on("join", (data) => console.log(data));
   socket.on("message", (data) => console.log(data));
-  socket.on("chat message", (data) => console.log("Chat message:", data));
+  socket.on("chat", (data) => chatMessages.push(data));
+  socket.on("disconnect", () => {
+    console.log(`Client disconnected: ${socket.id}`);
+  });
 });
+// setInterval(() => {
+//   console.log("Dropping all sockets...");
+//   console.log("Active sockets:", io.sockets.sockets.size);
+//   io.sockets.sockets.forEach((socket) => {
+//     socket.disconnect(true);
+//   });
+// }, 1000);
 
+// setInterval(() => {
+//   io.emit("chatMessages", chatMessages);
+// }, 5000);
 httpServer.listen(4000, () => {
   console.log("server running on http://localhost:4000");
 });
