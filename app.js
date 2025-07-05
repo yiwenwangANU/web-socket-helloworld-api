@@ -23,9 +23,8 @@ io.on("connection", (socket) => {
   });
 });
 setInterval(() => {
-  console.log(chatMessages);
   io.emit("chatMessages", chatMessages);
-}, 10000);
+}, 1000);
 // setInterval(() => {
 //   console.log("Dropping all sockets...");
 //   console.log("Active sockets:", io.sockets.sockets.size);
